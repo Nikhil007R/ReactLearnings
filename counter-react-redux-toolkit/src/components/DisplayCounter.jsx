@@ -1,7 +1,10 @@
 import { useSelector } from "react-redux";
 
 const DisplayCounter = ()=>{
-    const value = useSelector(store => store.counter)
+    // const value = useSelector(store => store.counter)
+
+    const value = useSelector(store => store.counter.counterVal)
+
     const toggle = useSelector(store => store.privacy)
 
     return(

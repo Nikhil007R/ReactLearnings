@@ -1,41 +1,48 @@
 import { useRef } from "react";
 import "../App.css"
 import { useDispatch } from "react-redux";
+import { counterActions, privacyActions } from "../store";
 const Controls = () => {
 
   const dispatch = useDispatch()
   const inputElement = useRef();
 
   const handleIncrement = ()=>{
-    dispatch({type: "INCREMENT"})
+    // console.log(counterActions.increment())
+    dispatch(counterActions.increment())
   }
-
+  
   const handleDecrement = ()=>{
-    dispatch({type: "DECREMENT"})
+    // console.log(counterActions.decrement())
+    dispatch(counterActions.decrement())
   }
   
   const handleAdd = ()=>{
-    dispatch({
-      type: "ADD",
-      payload: {
-        num: inputElement.current.value
-      }
-    })
+    // dispatch({
+    //   type: "ADD",
+    //   payload: {
+    //     num: inputElement.current.value
+    //   }
+    // })
+    dispatch(counterActions.add({num: inputElement.current.value}))
+    // dispatch(counterActions.add(inputElement.current.value))
+    // we can also type like this for getting the value and in the store we can get this action value by :::: actions.payload 
     inputElement.current.value = ""
   }
 
   const handleSub = ()=>{
-    dispatch({
-      type: "SUBTRACT",
-      payload: {
-        num: inputElement.current.value
-      }
-    })
+    // dispatch({
+    //   type: "SUBTRACT",
+    //   payload: {
+    //     num: inputElement.current.value
+    //   }
+    // })
+    dispatch(counterActions.sub({num: inputElement.current.value}))
     inputElement.current.value = ""
   }
 
   const handlePrivacy = ()=>{
-    dispatch({type: "Privacy_Toggle"})
+    dispatch(privacyActions.toggle())
   }
 
   return (

@@ -1,51 +1,72 @@
-import { createStore } from 'redux'
+import {configureStore, createSlice} from "@reduxjs/toolkit"
 
-const INITIAL_VALUE = {
-    counter: 0,
-    privacy: false
-}
+const counterSlice = createSlice({
+    name: 'counter',
+    initialState: {counterVal: 0},
+    reducers: {
+        increment: (state, action)=>{
+            console.log(state, action);
+            state.counterVal++;
+        },
+        decrement: (state, action)=>{
+            console.log(state, action);
+            state.counterVal--; 
+        },
+        add: (state, action)=>{
+            state.counterVal += Number(action.payload.num)
+        },
+        sub: (state, action)=>{
+            state.counterVal -= Number(action.payload.num)
+        },
+        
+    }
+})
 
-const counterReducer = (store = INITIAL_VALUE, action)=>{
-    if(action.type === "INCREMENT"){
-        return {...store , counter: store.counter + 1}
+const privacySlice = createSlice({
+    name: 'privacy',
+    initialState: false,
+    reducers: {
+        toggle: (state)=>{
+            return state = !state;
+        }
     }
-    else if(action.type === "DECREMENT"){
-        return {...store , counter: store.counter - 1} 
-    }
-    else if(action.type === "ADD"){
-        return {...store ,counter: store.counter + Number(action.payload.num)}
-    }
-    else if(action.type === "SUBTRACT"){
-        return {...store , counter: store.counter - Number(action.payload.num)}
-    }
-    else if(action.type === "Privacy_Toggle"){
-        return {...store , privacy: !store.privacy}
-    }
-    return store;
-}
+})
 
+const counterStore = configureStore({
+    reducer: {
+        counter: counterSlice.reducer,
+        privacy: privacySlice.reducer
+    }
+})
 
-// lets say if we have 100 properties in our store so we cannot return each and every value in every return statement right? So in order to face this difficulty we use spread operator to get all the values in store and then the value that we are going to change, change them after that  
+export const counterActions = counterSlice.actions
+export const privacyActions = privacySlice.actions
+
+export default counterStore;
+
+// import { createStore } from 'redux'
+
+// const INITIAL_VALUE = {
+    //     counter: 0,
+//     privacy: false
+// }
 
 // const counterReducer = (store = INITIAL_VALUE, action)=>{
-//     if(action.type === "INCREMENT"){
-//         return {counter: store.counter + 1, privacy: store.privacy}
-//     }
+
+    //     if(action.type === "INCREMENT"){
+        //         return {...store , counter: store.counter + 1}
+        //     }
 //     else if(action.type === "DECREMENT"){
-//         return {counter: store.counter - 1, privacy: store.privacy} 
-//     }
-//     else if(action.type === "ADD"){
-//         return {counter: store.counter + Number(action.payload.num), privacy: store.privacy}
+    //         return {...store , counter: store.counter - 1} 
+    //     }
+    //     else if(action.type === "ADD"){
+//         return {...store ,counter: store.counter + Number(action.payload.num)}
 //     }
 //     else if(action.type === "SUBTRACT"){
-//         return {counter: store.counter - Number(action.payload.num), privacy: store.privacy}
+//         return {...store , counter: store.counter - Number(action.payload.num)}
 //     }
 //     else if(action.type === "Privacy_Toggle"){
-//         return {counter: store.counter, privacy: !store.privacy}
+//         return {...store , privacy: !store.privacy}
 //     }
 //     return store;
 // }
-
-const counterStore = createStore(counterReducer)
-
-export default counterStore;
